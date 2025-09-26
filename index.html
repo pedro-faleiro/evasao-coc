@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Evasão dos Cursos de CHOQUE PMDF</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a73e8, #6c8ef5);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h2 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            text-align: center;
+            margin: 10px;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .ingressos { color: #1a73e8; }
+        .formados { color: #34a853; }
+        .desistencias { color: #ea4335; }
+        .taxa { color: #f9ab00; }
+        
+        .chart-container {
+            height: 300px;
+            margin-top: 15px;
+        }
+        
+        .insights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .insight-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .insight-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .alerta { color: #ea4335; }
+        .tendencia { color: #f9ab00; }
+        .sucesso { color: #34a853; }
+        
+        .conclusao {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            border-left: 5px solid #1a73e8;
+        }
+        
+        .conclusao h2 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+        }
+        
+        .recomendacoes {
+            margin-top: 20px;
+        }
+        
+        .recomendacoes ol {
+            margin-left: 20px;
+        }
+        
+        .recomendacoes li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .curso-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .curso-nome {
+            font-weight: bold;
+        }
+        
+        .curso-taxa {
+            font-weight: bold;
+        }
+        
+        .alta { color: #ea4335; }
+        .moderada { color: #f9ab00; }
+        .baixa { color: #34a853; }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Análise de Evasão Escolar</h1>
+        <p class="subtitle">Desempenho das turmas do 1º ao 16º COC</p>
+    </header>
+    
+    <section class="dashboard">
+        <div class="card">
+            <h2>Visão Geral</h2>
+            <div class="stats-container">
+                <div class="stat">
+                    <div class="stat-value ingressos">620</div>
+                    <div class="stat-label">Total de Ingressantes</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value formados">479</div>
+                    <div class="stat-label">Total de Formados</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value desistencias">141</div>
+                    <div class="stat-label">Total de Desistências</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value taxa">22,74%</div>
+                    <div class="stat-label">Taxa Geral de Evasão</div>
+                </div>
+            </div>
+            <p style="margin-top: 15px; text-align: center; font-style: italic;">
+                Quase 1 em cada 4 alunos que ingressaram não concluíram o curso.
+            </p>
+        </div>
+        
+        <div class="card">
+            <h2>Taxa de Evasão por Curso</h2>
+            <div class="chart-container">
+                <canvas id="evasionChart"></canvas>
+            </div>
+        </div>
+    </section>
+    
+    <section class="dashboard">
+        <div class="card">
+            <h2>Ingressantes vs Formados</h2>
+            <div class="chart-container">
+                <canvas id="comparisonChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Ranking de Evasão</h2>
+            <div id="rankingList">
+                <!-- Será preenchido via JavaScript -->
+            </div>
+        </div>
+    </section>
+    
+    <section class="insights">
+        <div class="insight-card">
+            <div class="insight-icon alerta">🔴</div>
+            <div>
+                <h3>Ponto de Alerta Máximo</h3>
+                <p>O <strong>16º COC</strong> tem a maior taxa de evasão do período (<strong>51,28%</strong>). Mais da metade dos alunos que ingressaram desistiram.</p>
+            </div>
+        </div>
+        
+        <div class="insight-card">
+            <div class="insight-icon tendencia">📈</div>
+            <div>
+                <h3>Tendência de Crise</h3>
+                <p>A evasão dá um salto a partir do <strong>9º COC</strong>, mantendo-se em níveis criticamente altos até o final.</p>
+            </div>
+        </div>
+        
+        <div class="insight-card">
+            <div class="insight-icon sucesso">✅</div>
+            <div>
+                <h3>Cases de Sucesso</h3>
+                <p>O <strong>4º COC</strong> se destaca com a menor taxa de evasão (<strong>2,04%</strong>), um exemplo a ser estudado e replicado. O <strong>7º COC</strong> também tem um desempenho excelente (5,56%).</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="conclusao">
+        <h2>Conclusão e Recomendações</h2>
+        <p><strong>Conclusão:</strong> A evasão não é uniforme. Existe uma <strong>fase crítica de desgaste</strong> a partir da metade do curso (9º COC em diante), que atinge seu ápice no último curso (16º COC).</p>
+        
+    </section>
+
+    <script>
+        // Dados fornecidos
+        const cursos = ['1º COC', '2º COC', '3º COC', '4º COC', '5º COC', '6º COC', '7º COC', '8º COC', 
+                       '9º COC', '10º COC', '11º COC', '12º COC', '13º COC', '14º COC', '15º COC', '16º COC'];
+        
+        const ingressos = [33, 52, 32, 49, 30, 40, 36, 32, 43, 35, 36, 34, 45, 45, 44, 39];
+        const formados = [28, 48, 25, 48, 27, 36, 34, 25, 23, 19, 25, 22, 39, 33, 28, 19];
+        const desistencias = [5, 4, 7, 1, 3, 4, 2, 7, 20, 16, 11, 12, 6, 12, 16, 20];
+        const taxas = [15.15, 7.69, 21.88, 2.04, 10.00, 10.00, 5.56, 21.88, 
+                      46.51, 45.71, 30.56, 35.29, 13.33, 26.67, 36.36, 51.28];
+
+        // Configuração do gráfico de evasão
+        const evasionCtx = document.getElementById('evasionChart').getContext('2d');
+        const evasionChart = new Chart(evasionCtx, {
+            type: 'bar',
+            data: {
+                labels: cursos,
+                datasets: [{
+                    label: 'Taxa de Evasão (%)',
+                    data: taxas,
+                    backgroundColor: taxas.map(taxa => {
+                        if (taxa >= 30) return '#ea4335'; // Alta
+                        if (taxa >= 10) return '#f9ab00'; // Moderada
+                        return '#34a853'; // Baixa
+                    }),
+                    borderColor: taxas.map(taxa => {
+                        if (taxa >= 30) return '#d33426';
+                        if (taxa >= 10) return '#e08d00';
+                        return '#2e8b57';
+                    }),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Taxa de Evasão (%)'
+                        },
+                        max: 60
+                    },
+                    x: {
+                        ticks: {
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `Taxa de evasão: ${context.parsed.y}%`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Configuração do gráfico de comparação
+        const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
+        const comparisonChart = new Chart(comparisonCtx, {
+            type: 'bar',
+            data: {
+                labels: cursos,
+                datasets: [
+                    {
+                        label: 'Ingressantes',
+                        data: ingressos,
+                        backgroundColor: 'rgba(26, 115, 232, 0.7)',
+                        borderColor: 'rgba(26, 115, 232, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Formados',
+                        data: formados,
+                        backgroundColor: 'rgba(52, 168, 83, 0.7)',
+                        borderColor: 'rgba(52, 168, 83, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Número de Alunos'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    }
+                }
+            }
+        });
+
+        // Preencher o ranking de evasão
+        const rankingList = document.getElementById('rankingList');
+        
+        // Criar array de objetos para ordenação
+        const cursosComTaxas = cursos.map((curso, index) => {
+            return {
+                nome: curso,
+                taxa: taxas[index]
+            };
+        });
+        
+        // Ordenar por taxa de evasão (maior para menor)
+        cursosComTaxas.sort((a, b) => b.taxa - a.taxa);
+        
+        // Adicionar cada curso à lista
+        cursosComTaxas.forEach(curso => {
+            const item = document.createElement('div');
+            item.className = 'curso-item';
+            
+            const nome = document.createElement('span');
+            nome.className = 'curso-nome';
+            nome.textContent = curso.nome;
+            
+            const taxa = document.createElement('span');
+            taxa.className = 'curso-taxa';
+            
+            // Determinar a classe de cor com base na taxa
+            if (curso.taxa >= 30) {
+                taxa.classList.add('alta');
+            } else if (curso.taxa >= 10) {
+                taxa.classList.add('moderada');
+            } else {
+                taxa.classList.add('baixa');
+            }
+            
+            taxa.textContent = `${curso.taxa}%`;
+            
+            item.appendChild(nome);
+            item.appendChild(taxa);
+            rankingList.appendChild(item);
+        });
+    </script>
+</body>
+</html>
