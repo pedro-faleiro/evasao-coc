@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise de Evasão dos Cursos de CHOQUE PMDF</title>
+    <title>Análise de Desistências - COC PMDF</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -44,6 +44,13 @@
         .dashboard {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .horizontal-dashboard {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -100,6 +107,11 @@
         
         .chart-container {
             height: 300px;
+            margin-top: 15px;
+        }
+        
+        .horizontal-chart-container {
+            height: 500px;
             margin-top: 15px;
         }
         
@@ -175,8 +187,56 @@
         .moderada { color: #f9ab00; }
         .baixa { color: #34a853; }
         
+        .institutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .institution-item {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .institution-name {
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+        
+        .institution-value {
+            font-weight: bold;
+            color: #1a73e8;
+        }
+        
+        .female-police-card {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .female-police-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        
+        .female-police-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
         @media (max-width: 768px) {
-            .dashboard {
+            .dashboard, .horizontal-dashboard {
                 grid-template-columns: 1fr;
             }
             
@@ -187,13 +247,21 @@
             .stats-container {
                 flex-direction: column;
             }
+            
+            .horizontal-chart-container {
+                height: 400px;
+            }
+            
+            .institutions-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Análise de Evasão dos Cursos de CHOQUE PMDF</h1>
-        <p class="subtitle">Desempenho das turmas do 1º ao 16º COC</p>
+        <h1>Análise de Desistências nos cursos de CHOQUE - PMDF</h1>
+        <p class="subtitle">Desempenho dos turnos do 1º ao 16º COC</p>
     </header>
     
     <section class="dashboard">
@@ -233,7 +301,7 @@
     <section class="dashboard">
         <div class="card">
             <h2>Ingressantes vs Formados</h2>
-            <div class="chart-container">
+            <div class="horizontal-chart-container">
                 <canvas id="comparisonChart"></canvas>
             </div>
         </div>
@@ -246,11 +314,26 @@
         </div>
     </section>
     
+    <section class="horizontal-dashboard">
+        <div class="card">
+            <h2>Formados de Outras Instituições</h2>
+            <div class="institutions-grid" id="institutionsList">
+                <!-- Será preenchido via JavaScript -->
+            </div>
+        </div>
+        
+        <div class="female-police-card">
+            <h2>Policiais Femininas Formadas</h2>
+            <div class="female-police-value">16</div>
+            <div class="female-police-label">Mulheres que concluíram o curso</div>
+        </div>
+    </section>
+    
     <section class="insights">
         <div class="insight-card">
             <div class="insight-icon alerta">🔴</div>
             <div>
-                <h3>Ponto de Alerta Máximo</h3>
+                <h3>Ponto de Alerta</h3>
                 <p>O <strong>16º COC</strong> tem a maior taxa de evasão do período (<strong>51,28%</strong>). Mais da metade dos alunos que ingressaram desistiram.</p>
             </div>
         </div>
@@ -259,23 +342,31 @@
             <div class="insight-icon tendencia">📈</div>
             <div>
                 <h3>Tendência de Crise</h3>
-                <p>A evasão dá um salto a partir do <strong>9º COC</strong>, mantendo-se em níveis criticamente altos até o final.</p>
+                <p>A evasão dá um salto a partir do <strong>9º COC</strong></p>
             </div>
         </div>
         
         <div class="insight-card">
             <div class="insight-icon sucesso">✅</div>
             <div>
-                <h3>PFEMs</h3>
-                <p><strong>16</strong> Policiais femininas concluiram o Curso de Operações de CHOQUE até o momento sendo as primeiras no <strong>8º COC</strong></p>
+                <h3>Menor Evasão</h3>
+                <p>O <strong>4º COC</strong> se destaca com a menor taxa de evasão (<strong>2,04%</strong>), um exemplo a ser estudado e replicado. O <strong>7º COC</strong> também tem um desempenho excelente (5,56%).</p>
             </div>
         </div>
     </section>
     
     <section class="conclusao">
-        <h2>Conclusão e Recomendações</h2>
-        <p><strong>Conclusão:</strong> A evasão não é uniforme. Existe uma <strong>fase crítica de desgaste</strong> a partir da metade do curso (9º COC em diante), que atinge seu ápice no último curso (16º COC).</p>
+        <h2>Conclusão</h2>
+        <p><strong>Conclusão:</strong> A evasão não é uniforme. Existe uma <strong>fase crítica </strong> a partir do 9º COC, que atinge seu ápice no último curso, 16º COC.</p>
         
+        <div class="recomendacoes">
+            <h3>Recomendações:</h3>
+            <ol>
+                <li><strong>Investigação Profunda:</strong> Entender os motivos da alta evasão nos cursos 9 ao 16.</li>
+                <li><strong>Programa de Retenção:</strong> Criar ações específicas de suporte e acompanhamento para os alunos.</li>
+                <li><strong>Motivação:</strong> Estudar os fatores motivadores para que ainda existam tentantes.</li>
+            </ol>
+        </div>
     </section>
 
     <script>
@@ -288,6 +379,30 @@
         const desistencias = [5, 4, 7, 1, 3, 4, 2, 7, 20, 16, 11, 12, 6, 12, 16, 20];
         const taxas = [15.15, 7.69, 21.88, 2.04, 10.00, 10.00, 5.56, 21.88, 
                       46.51, 45.71, 30.56, 35.29, 13.33, 26.67, 36.36, 51.28];
+
+        // Dados das instituições
+        const institutions = [
+            { name: 'PMPA', value: 1 },
+            { name: 'PMGO', value: 15 },
+            { name: 'PMMS', value: 4 },
+            { name: 'PMMT', value: 2 },
+            { name: 'EB', value: 3 },
+            { name: 'FAB', value: 10 },
+            { name: 'PF', value: 5 },
+            { name: 'PRF', value: 4 },
+            { name: 'FN', value: 3 },
+            { name: 'PMPB', value: 4 },
+            { name: 'PMRN', value: 2 },
+            { name: 'PMTO', value: 1 },
+            { name: 'PMAP', value: 2 },
+            { name: 'PMAM', value: 3 },
+            { name: 'PMMG', value: 2 },
+            { name: 'PMPR', value: 1 },
+            { name: 'PPRN', value: 1 },
+            { name: 'PPGO', value: 1 },
+            { name: 'PMSC', value: 3 },
+            { name: 'PMMA', value: 1 }
+        ];
 
         // Configuração do gráfico de evasão
         const evasionCtx = document.getElementById('evasionChart').getContext('2d');
@@ -345,7 +460,7 @@
             }
         });
 
-        // Configuração do gráfico de comparação
+        // Configuração do gráfico de comparação horizontal
         const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
         const comparisonChart = new Chart(comparisonCtx, {
             type: 'bar',
@@ -369,21 +484,21 @@
                 ]
             },
             options: {
+                indexAxis: 'y',
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
-                    y: {
+                    x: {
                         beginAtZero: true,
                         title: {
                             display: true,
                             text: 'Número de Alunos'
                         }
-                    },
-                    x: {
-                        ticks: {
-                            maxRotation: 45,
-                            minRotation: 45
-                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
                     }
                 }
             }
@@ -429,6 +544,29 @@
             item.appendChild(nome);
             item.appendChild(taxa);
             rankingList.appendChild(item);
+        });
+
+        // Preencher a lista de instituições (ordenadas por valor decrescente)
+        const institutionsList = document.getElementById('institutionsList');
+        
+        // Ordenar instituições por valor (decrescente)
+        institutions.sort((a, b) => b.value - a.value);
+        
+        institutions.forEach(institution => {
+            const item = document.createElement('div');
+            item.className = 'institution-item';
+            
+            const name = document.createElement('div');
+            name.className = 'institution-name';
+            name.textContent = institution.name;
+            
+            const value = document.createElement('div');
+            value.className = 'institution-value';
+            value.textContent = institution.value;
+            
+            item.appendChild(name);
+            item.appendChild(value);
+            institutionsList.appendChild(item);
         });
     </script>
 </body>
