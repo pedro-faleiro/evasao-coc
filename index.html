@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise de Desistências - COC PMDF</title>
+    <title>Análise de Evasão Escolar</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -17,7 +17,7 @@
             background-color: #f5f7fa;
             color: #333;
             padding: 20px;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         
@@ -103,7 +103,26 @@
         .ingressos { color: #1a73e8; }
         .formados { color: #34a853; }
         .desistencias { color: #ea4335; }
-        .taxa { color: #f9ab00; }
+        
+        .taxa-container {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .taxa-destaque {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #f9ab00;
+            margin-bottom: 5px;
+        }
+        
+        .taxa-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #666;
+        }
         
         .chart-container {
             height: 300px;
@@ -111,7 +130,7 @@
         }
         
         .horizontal-chart-container {
-            height: 500px;
+            height: 600px;
             margin-top: 15px;
         }
         
@@ -249,19 +268,24 @@
             }
             
             .horizontal-chart-container {
-                height: 400px;
+                height: 500px;
             }
             
             .institutions-grid {
                 grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            
+            .taxa-destaque {
+                font-size: 2.4rem;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Análise de Desistências nos cursos de CHOQUE - PMDF</h1>
+        <h1>Análise de Evasão Escolar</h1>
         <p class="subtitle">Desempenho dos turnos do 1º ao 16º COC</p>
+        <p class="subtitle">2º SGT FALEIRO</p>
     </header>
     
     <section class="dashboard">
@@ -280,11 +304,13 @@
                     <div class="stat-value desistencias">141</div>
                     <div class="stat-label">Total de Desistências</div>
                 </div>
-                <div class="stat">
-                    <div class="stat-value taxa">22,74%</div>
-                    <div class="stat-label">Taxa Geral de Evasão</div>
-                </div>
             </div>
+            
+            <div class="taxa-container">
+                <div class="taxa-destaque">22,74%</div>
+                <div class="taxa-label">Taxa Geral de Evasão</div>
+            </div>
+            
             <p style="margin-top: 15px; text-align: center; font-style: italic;">
                 Quase 1 em cada 4 alunos que ingressaram não concluíram o curso.
             </p>
@@ -300,9 +326,9 @@
     
     <section class="dashboard">
         <div class="card">
-            <h2>Ingressantes vs Formados</h2>
+            <h2>Composição por Curso: Formados vs Desistências</h2>
             <div class="horizontal-chart-container">
-                <canvas id="comparisonChart"></canvas>
+                <canvas id="compositionChart"></canvas>
             </div>
         </div>
         
@@ -316,7 +342,7 @@
     
     <section class="horizontal-dashboard">
         <div class="card">
-            <h2>Formados de Outras Instituições: 68</h2>
+            <h2>Formados de Outras Instituições</h2>
             <div class="institutions-grid" id="institutionsList">
                 <!-- Será preenchido via JavaScript -->
             </div>
@@ -325,7 +351,7 @@
         <div class="female-police-card">
             <h2>Policiais Femininas Formadas</h2>
             <div class="female-police-value"><strong>16</strong></div>
-            <div class="female-police-label">Mulheres que concluíram o curso. As primeiras no <strong>8º COC</strong>, realizado em 2014. Elas representam <strong>3,34%</strong> dos alunos formados.</div>
+            <div class="female-police-label">As primeiras no <strong>8º COC</strong>, realizado em 2014. Elas representam <strong>3,34%</strong> dos alunos formados.</div>
         </div>
     </section>
     
@@ -333,7 +359,7 @@
         <div class="insight-card">
             <div class="insight-icon alerta">🔴</div>
             <div>
-                <h3>Ponto de Alerta</h3>
+                <h3>Ponto de Alerta Máximo</h3>
                 <p>O <strong>16º COC</strong> tem a maior taxa de evasão do período (<strong>51,28%</strong>). Mais da metade dos alunos que ingressaram desistiram.</p>
             </div>
         </div>
@@ -342,7 +368,7 @@
             <div class="insight-icon tendencia">📈</div>
             <div>
                 <h3>Tendência de Crise</h3>
-                <p>A evasão dá um salto a partir do <strong>9º COC</strong></p>
+                <p>A evasão dá um salto a partir do <strong>9º COC</strong>.</p>
             </div>
         </div>
         
@@ -350,14 +376,14 @@
             <div class="insight-icon sucesso">✅</div>
             <div>
                 <h3>Menor Evasão</h3>
-                <p>O <strong>4º COC</strong> se destaca com a menor taxa de evasão (<strong>2,04%</strong>), um exemplo a ser estudado e replicado. O <strong>7º COC</strong> também tem um desempenho excelente (5,56%).</p>
+                <p>O <strong>4º COC</strong> se destaca com a menor taxa de evasão (<strong>2,04%</strong>), um exemplo a ser estudado. O <strong>7º COC</strong> também tem um desempenho excelente (<strong>5,56%</strong>).</p>
             </div>
         </div>
     </section>
     
     <section class="conclusao">
-        <h2>Conclusão</h2>
-        <p><strong>Conclusão:</strong> A evasão não é uniforme. Existe uma <strong>fase crítica </strong> a partir do 9º COC, que atinge seu ápice no último curso, 16º COC.</p>
+        <h2>Conclusão e Recomendações</h2>
+        <p><strong>Conclusão:</strong> A evasão não é uniforme. Existe uma <strong>fase crítica</strong> a que se inicia a partir do <strong>9º COC</strong>, que atinge seu ápice no último curso <strong>16º COC</strong>.</p>
         
         <div class="recomendacoes">
             <h3>Recomendações:</h3>
@@ -374,6 +400,8 @@
         const cursos = ['1º COC', '2º COC', '3º COC', '4º COC', '5º COC', '6º COC', '7º COC', '8º COC', 
                        '9º COC', '10º COC', '11º COC', '12º COC', '13º COC', '14º COC', '15º COC', '16º COC'];
         
+        const anos = [2001, 2001, 2003, 2006, 2007, 2009, 2012, 2014, 2015, 2015, 2017, 2019, 2020, 2022, 2023, 2025];
+        
         const ingressos = [33, 52, 32, 49, 30, 40, 36, 32, 43, 35, 36, 34, 45, 45, 44, 39];
         const formados = [28, 48, 25, 48, 27, 36, 34, 25, 23, 19, 25, 22, 39, 33, 28, 19];
         const desistencias = [5, 4, 7, 1, 3, 4, 2, 7, 20, 16, 11, 12, 6, 12, 16, 20];
@@ -383,6 +411,7 @@
         // Dados das instituições
         const institutions = [
             { name: 'PMPA', value: 1 },
+            { name: 'PPGO', value: 1 },
             { name: 'PMGO', value: 15 },
             { name: 'PMMS', value: 4 },
             { name: 'PMMT', value: 2 },
@@ -400,7 +429,6 @@
             { name: 'PMPR', value: 1 },
             { name: 'PPRN', value: 1 },
             { name: 'PPGO', value: 1 },
-            { name: 'PPDF', value: 1 },
             { name: 'PMSC', value: 3 },
             { name: 'PMMA', value: 1 }
         ];
@@ -461,25 +489,25 @@
             }
         });
 
-        // Configuração do gráfico de comparação horizontal
-        const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
-        const comparisonChart = new Chart(comparisonCtx, {
+        // Configuração do gráfico de composição (barras empilhadas)
+        const compositionCtx = document.getElementById('compositionChart').getContext('2d');
+        const compositionChart = new Chart(compositionCtx, {
             type: 'bar',
             data: {
-                labels: cursos,
+                labels: cursos.map((curso, index) => `${curso}\n(${anos[index]})`),
                 datasets: [
-                    {
-                        label: 'Ingressantes',
-                        data: ingressos,
-                        backgroundColor: 'rgba(26, 115, 232, 0.7)',
-                        borderColor: 'rgba(26, 115, 232, 1)',
-                        borderWidth: 1
-                    },
                     {
                         label: 'Formados',
                         data: formados,
-                        backgroundColor: 'rgba(52, 168, 83, 0.7)',
+                        backgroundColor: 'rgba(52, 168, 83, 0.9)',
                         borderColor: 'rgba(52, 168, 83, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Desistências',
+                        data: desistencias,
+                        backgroundColor: 'rgba(234, 67, 53, 0.9)',
+                        borderColor: 'rgba(234, 67, 53, 1)',
                         borderWidth: 1
                     }
                 ]
@@ -490,16 +518,41 @@
                 maintainAspectRatio: false,
                 scales: {
                     x: {
+                        stacked: true,
                         beginAtZero: true,
                         title: {
                             display: true,
                             text: 'Número de Alunos'
+                        },
+                        max: 60
+                    },
+                    y: {
+                        stacked: true,
+                        ticks: {
+                            autoSkip: false
                         }
                     }
                 },
                 plugins: {
                     legend: {
                         position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            afterBody: function(context) {
+                                const datasetIndex = context[0].datasetIndex;
+                                const dataIndex = context[0].dataIndex;
+                                const total = ingressos[dataIndex];
+                                const value = context[0].parsed.x;
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                
+                                if (datasetIndex === 0) {
+                                    return `Representa ${percentage}% dos ingressantes`;
+                                } else {
+                                    return `Representa ${percentage}% dos ingressantes`;
+                                }
+                            }
+                        }
                     }
                 }
             }
